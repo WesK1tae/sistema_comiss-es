@@ -1,0 +1,104 @@
+class Cliente:
+    def __init__(self, nome, endereco, contato):
+        self.nome = nome
+        self.endereco = endereco
+        self.contato = contato
+
+class Vendedor:
+    def __init__(self, nome, id, contato):
+        self.nome = nome
+        self.id = id
+        self.contato = contato
+        self.vendas = []
+
+    def realizar_venda(self, valor_venda):
+        venda = Venda(valor_venda, self)
+        self.vendas.append(venda)
+        return venda
+
+    def calcular_comissao(self):
+        total_comissao = 0
+        for venda in self.vendas:
+            total_comissao += venda.calcular_comissao()
+        return total_comissao
+
+class Venda:
+    def __init__(self, valor, vendedor):
+        self.valor = valor
+        self.vendedor = vendedor
+
+    def calcular_comissao(self):
+        if self.vendedor.calcular_comissao() == 0:
+            return self.valor * 0.07  # 7% de comissão para vendedor novo
+        else:
+            return self.valor * 0.04  # 4% de comissão para vendedor antigo
+
+clientes = []
+vendedores = []
+
+while True:
+    print("\nMENU:")
+    print("1. Cadastrar Cliente")
+    print("2. Cadastrar Vendedor")
+    print("3. Realizar Venda")
+    print("4. Calcular Comissão de Vendedor")
+    print("5. Gerar Relatório de Vendas")
+    print("6. Sair")
+
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == "1":
+        nome = input("Nome do Cliente: ")
+        endereco = input("Endereço do Cliente: ")
+        contato = input("Informações de Contato do Cliente: ")
+        cliente = Cliente(nome, endereco, contato)
+        clientes.append(cliente)
+        print("Cliente cadastrado com sucesso!")
+
+    elif opcao == "2":
+        nome = input("Nome do Vendedor: ")
+        id = input("ID único do Vendedor: ")
+        contato = input("Informações de Contato do Vendedor: ")
+        vendedor = Vendedor(nome, id, contato)
+        vendedores.append(vendedor)
+        print("Vendedor cadastrado com sucesso!")
+
+    elif opcao == "3":
+        if not vendedores:
+            print("Não existem vendedores cadastrados. Cadastre um vendedor primeiro.")
+        else:
+            valor_venda = float(input("Valor da Venda: "))
+            print("Selecione o vendedor:")
+            for i, vendedor in enumerate(vendedores):
+                print(f"{i + 1}. {vendedor.nome}")
+            escolha = int(input())
+            if 1 <= escolha <= len(vendedores):
+                vendedor = vendedores[escolha - 1]
+                vendedor.realizar_venda(valor_venda)
+                print(f"Venda realizada com sucesso pelo vendedor {vendedor.nome}!")
+
+    elif opcao == "4":
+        if not vendedores:
+            print("Não existem vendedores cadastrados. Cadastre um vendedor primeiro.")
+        else:
+            print("Selecione o vendedor para calcular a comissão:")
+            for i, vendedor in enumerate(vendedores):
+                print(f"{i + 1}. {vendedor.nome}")
+            escolha = int(input())
+            if 1 <= escolha <= len(vendedores):
+                vendedor = vendedores[escolha - 1]
+                comissao = vendedor.calcular_comissao()
+                print(f"A comissão do vendedor {vendedor.nome} é: R${comissao:.2f}")
+
+    elif opcao == "5":
+        print("\nRelatório de Vendas:")
+        for vendedor in vendedores:
+            print(f"Vendedor: {vendedor.nome}")
+            for venda in vendedor.vendas:
+                print(f"  Valor da Venda: R${venda.valor:.2f}, Comissão: R${venda.calcular_comissao():.2f}")
+
+    elif opcao == "6":
+        break
+
+    else:
+        print("Opção inválida. Tente novamente.")
