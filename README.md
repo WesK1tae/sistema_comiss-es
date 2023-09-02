@@ -1,2 +1,4 @@
 # sistema_comiss-es
-backend projeto
+
+para rodar o projeto, abra o python e importe o codigo.
+
