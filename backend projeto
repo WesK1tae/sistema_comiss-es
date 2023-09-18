@@ -29,12 +29,12 @@ class Venda:
 
     def calcular_comissao(self):
         if self.vendedor.calcular_comissao() == 0:
-            return self.valor * 0.07  # 7% de comissão para vendedor novo
+            return self.valor * 0.07  
         else:
-            return self.valor * 0.04  # 4% de comissão para vendedor antigo
+            return self.valor * 0.04  
 
-clientes = []
-vendedores = []
+clientes = []     #Lista onde ficara os dadaos do cliente cadastrado na compra
+vendedores = []   # Lista onde ficara os vendores que cadarastaram as compras
 
 while True:
     print("\nMENU:")
